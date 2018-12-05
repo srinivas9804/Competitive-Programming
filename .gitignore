@@ -1,0 +1,8 @@
+*.pdf
+*.txt
+Debug/
+x64/
+AdvancedProgramming.vcxproj
+AdvancedProgramming.vcxproj.filters
+AdvancedProgramming.sln
+AdvancedProgramming.vcxproj.user
