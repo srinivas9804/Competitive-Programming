@@ -1,0 +1,71 @@
+Path reconstruction floyd warshall
+
+#include <iostream>
+#include <list>
+#include <functional>
+#include <queue>
+#define INF 0xfffffff;
+using namespace std;
+int dist[101][101];
+int Next[101][101];
+int n;
+void floydwarshall () {
+	for (int k = 1; k <= n; k++) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (dist[i][j] > dist[i][k] + dist[k][j]) {
+					dist[i][j] = dist[i][k] + dist[k][j];	
+					Next[i][j] = Next[i][k];
+				}
+			}
+		}
+	}
+}
+int main() {
+	int ctr = 1;
+	int c, s, q;
+	while (cin >> c >> s >> q) {
+		
+		if (c == 0 && s ==0 && q == 0)
+			return 0;
+		n = c;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (i == j)
+					dist[i][j] = 0;
+				else
+					dist[i][j] = INF;
+				Next[i][j] = -1;
+			}
+		}
+		for (int i = 0; i < s; i++) {
+			int u, v, w;
+			cin >> u >> v >> w;
+			dist[u][v] = w;
+			dist[v][u] = w;
+			Next[u][v] = v;
+			Next[v][u] = u;
+		}
+		floydwarshall();
+		if(ctr==1)
+			cout << "Case #" << ctr++ << endl;
+		else
+			cout << "\nCase #" << ctr++ << endl;
+		for (int i = 0; i < q; i++) {
+			int u, v;
+			cin >> u >> v;
+			if (Next[u][v] == -1) {
+				cout << "no path" << endl;
+				continue;
+			}
+			int distance = 0;
+			while (u != v) {
+				int x = Next[u][v];
+				distance = distance > dist[u][x] ? distance : dist[u][x];
+				u = x;
+			}
+			cout << distance <<endl;
+		}
+	}
+	return 0;
+}
